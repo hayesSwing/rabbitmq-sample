@@ -1,5 +1,6 @@
 package com.xiangzi;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -22,14 +23,25 @@ public class RabbitMqTest {
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
 
+	@Ignore
 	@Repeat(value = 20)
 	@Test
 	public void hello() throws Exception {
 		String message = RandomUtils.generateString(6);
 		logger.info("message:" + message);
 		CorrelationData correlationData = null;
-		this.rabbitTemplate.convertAndSend(RabbitConstant.EXCHANGE_NAME, RabbitConstant.ROUTING_KEY, message,
-				correlationData);
+		this.rabbitTemplate.convertAndSend(RabbitConstant.EXCHANGE_NAME, RabbitConstant.ROUTING_KEY, message, correlationData);
+		Thread.sleep(500);
+	}
+
+	@Ignore
+	@Repeat(value = 20)
+	@Test
+	public void order() throws Exception {
+		String message = "order-" + RandomUtils.generateString(6);
+		logger.info("message:" + message);
+		CorrelationData correlationData = null;
+		this.rabbitTemplate.convertAndSend(RabbitConstant.EXCHANGE_NAME, RabbitConstant.ROUTING_KEY_ORDER, message, correlationData);
 		Thread.sleep(500);
 	}
 

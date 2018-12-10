@@ -67,8 +67,39 @@ public class RabbitMQConfig {
 			public void onMessage(Message message, Channel channel) throws Exception {
 				byte[] body = message.getBody();
 				System.out.println("receive msg : " + new String(body));
-				channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+
 				// 确认消息成功消费
+				channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+			}
+
+		});
+		return container;
+	}
+
+	// 队列-订单
+	@Bean(name = "queue4Order")
+	public Queue queue4Order() {
+		return QueueBuilder.durable(RabbitConstant.QUEUE_NAME_ORDER).build();
+	}
+
+	@Bean(name = "messageContainer4Order")
+	public SimpleMessageListenerContainer messageContainer4F1() {
+		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(this.connectionFactory());
+		// container.setTaskExecutor(taskExecutor);
+		container.setQueues(this.queue4Order()); // 设置要监听的队列
+		container.setExposeListenerChannel(true);
+		container.setMaxConcurrentConsumers(1);
+		container.setConcurrentConsumers(1);
+		container.setAcknowledgeMode(AcknowledgeMode.MANUAL); // 设置确认模式手工确认
+		container.setMessageListener(new ChannelAwareMessageListener() {
+
+			@Override
+			public void onMessage(Message message, Channel channel) throws Exception {
+				byte[] body = message.getBody();
+				System.out.println("receive order msg : " + new String(body));
+
+				// 确认消息成功消费
+				channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
 			}
 
 		});

@@ -77,4 +77,16 @@ public class RabbitMQConfig {
 		return BindingBuilder.bind(this.queue()).to(this.defaultExchange()).with(RabbitConstant.ROUTING_KEY);
 	}
 
+	// 队列-订单
+	@Bean(name = "queue4Order")
+	public Queue queue4Order() {
+		return QueueBuilder.durable(RabbitConstant.QUEUE_NAME_ORDER).build();
+	}
+
+	// 绑定-订单
+	@Bean(name = "binding4Order")
+	public Binding binding4Order() {
+		return BindingBuilder.bind(this.queue4Order()).to(this.defaultExchange()).with(RabbitConstant.ROUTING_KEY_ORDER);
+	}
+
 }
