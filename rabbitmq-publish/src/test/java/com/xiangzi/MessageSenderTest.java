@@ -27,7 +27,7 @@ public class MessageSenderTest {
 	@Autowired
 	private MessageSender messageSender;
 
-//	@Ignore
+	@Ignore
 	@Repeat(value = 20)
 	@Test
 	public void send() throws Exception {

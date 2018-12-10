@@ -15,7 +15,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<file.encoding>UTF-8</file.encoding>
-		<spring-boot.version>2.0.5.RELEASE</spring-boot.version>
+		<spring-boot.version>2.0.7.RELEASE</spring-boot.version>
 	</properties>
 
 <dependencyManagement>
@@ -61,6 +61,7 @@
 	<modules>
 		<module>rabbitmq-consumer</module>
 		<module>rabbitmq-publish</module>
+		<module>rabbitmq-mqtt-client</module>
 	</modules>
 	
 </project>

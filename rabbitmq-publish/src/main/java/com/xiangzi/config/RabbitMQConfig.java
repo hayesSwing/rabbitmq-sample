@@ -59,6 +59,14 @@ public class RabbitMQConfig {
 		return template;
 	}
 
+	@Bean(name = "mqttRabbitTemplate")
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+	public RabbitTemplate mqttRabbitTemplate() {
+		RabbitTemplate template = new RabbitTemplate(this.connectionFactory());
+		
+		return template;
+	}
+	
 	@Bean
 	public MessageCallBackSender messageCallBackSender() {
 		return new MessageCallBackSender();
