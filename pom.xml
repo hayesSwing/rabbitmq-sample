@@ -62,6 +62,7 @@
 		<module>rabbitmq-consumer</module>
 		<module>rabbitmq-publish</module>
 		<module>rabbitmq-mqtt-client</module>
+		<module>rabbitmq-mqtt-client2</module>
 	</modules>
 	
 </project>
