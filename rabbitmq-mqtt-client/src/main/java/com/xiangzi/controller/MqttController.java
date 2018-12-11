@@ -25,13 +25,13 @@ public class MqttController extends BaseController {
 
 	@RequestMapping(value = { "send" })
 	@ResponseBody
-	public Object index(Model model) throws MqttException {
+	public Object send(Model model) throws MqttException {
 		String tenantId = "10001";
 		Map<String, Object> message = new HashMap<>();
 		message.put("id", RandomUtils.getUUID());
 		message.put("date", DateUtils.getCurrentDateTime());
 		mqttClient.Publish(tenantId + "/sales/order", JSONUtil.toJSONString(message));
-		
+
 		Map<String, Object> result = new HashMap<>();
 		result.put("status", 1);
 		result.put("message", message);
