@@ -1,5 +1,8 @@
 package com.xiangzi.config;
 
+import java.io.File;
+import java.util.Map;
+
 import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.Queue;
@@ -12,8 +15,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.rabbitmq.client.Channel;
 import com.xiangzi.RabbitConstant;
+import com.xiangzi.util.FileUtils;
+import com.xiangzi.util.JSONUtil;
 
 @Configuration
 public class RabbitMQConfig {
@@ -66,7 +72,26 @@ public class RabbitMQConfig {
 
 			public void onMessage(Message message, Channel channel) throws Exception {
 				byte[] body = message.getBody();
-				System.out.println("receive msg : " + new String(body));
+				String bodyContent = new String(body);
+				System.out.println("receive msg : " + bodyContent);
+				// receive msg : {"tenantId":"10001","message":"67CM4S"}
+				Map<String, Object> dataMap = JSONUtil.parseObject(bodyContent,
+						new TypeReference<Map<String, Object>>() {
+						});
+				System.out.println("dataMap: " + JSONUtil.toJSONString(dataMap));
+
+				String tenantId = dataMap.get("tenantId").toString();
+				String msg = dataMap.get("message").toString();
+				System.out.println("tenantId : " + tenantId);
+				System.out.println("msg : " + msg);
+
+				String fileName = "./msg/" + msg + ".txt";
+				File file = new File(fileName);
+				if (!file.getParentFile().exists()) {
+					file.getParentFile().mkdirs();
+				}
+				file.createNewFile();
+				FileUtils.writeText(fileName, bodyContent);
 
 				// 确认消息成功消费
 				channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
